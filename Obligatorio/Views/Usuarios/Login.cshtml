@@ -1,0 +1,45 @@
+﻿@model DTO.LoginDTO
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container mt-5" style="max-width: 500px;">
+    <div class="text-center mb-4">
+        <img src="~/img/Logo.png" alt="Logo EnvíaYa" style="width: 120px;" />
+    </div>
+
+    <div class="text-center mb-4">
+        <h2 class="fw-bold" style="color: #0F2E4C;">¡Bienvenido!</h2>
+        <h5 class="fw-normal" style="color: #4F5D75;">Ingrese sus credenciales para iniciar sesión</h5>
+    </div>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Error
+        </div>
+    }
+
+    <form asp-action="Login" class="p-4 shadow rounded" style="background-color: #FFFFFF;">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label" style="color: #0F2E4C;">Correo Electrónico</label>
+            <input asp-for="Email" class="form-control border-2" style="border-color: #27C281;" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Password" class="form-label" style="color: #0F2E4C;">Contraseña</label>
+            <input asp-for="Password" type="password" class="form-control border-2" style="border-color: #27C281;" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn" style="background-color: #27C281; color: white; font-weight: bold;">
+                Iniciar sesión
+            </button>
+        </div>
+    </form>
+</div>

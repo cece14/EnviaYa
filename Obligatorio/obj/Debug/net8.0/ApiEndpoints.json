@@ -1,0 +1,18 @@
+[
+  {
+    "ContainingType": "Obligatorio.Controllers.EnviosApiController",
+    "Method": "ObtenerPorTracking",
+    "RelativePath": "api/EnviosApi/{nroTracking}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nroTracking",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

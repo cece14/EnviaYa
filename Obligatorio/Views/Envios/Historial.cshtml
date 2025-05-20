@@ -1,0 +1,73 @@
+﻿@model AltaEnvioViewModel
+
+@{
+    ViewData["Title"] = "Listado de Envíos";
+}
+
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold" style="color: #0F2E4C;">Todos los Envíos</h2>
+        <p class="text-muted">Visualice los envíos registrados y su estado</p>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success text-center fw-bold">@TempData["Success"]</div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center fw-bold">@TempData["Error"]</div>
+    }
+
+    @if (Model.Envios != null && Model.Envios.Any())
+    {
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-hover align-middle">
+                <thead class="table-light text-center">
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Tipo</th>
+                        <th>Agencia</th>
+                        <th>Dirección Postal</th>
+                        <th>Peso (kg)</th>
+                        <th>Fecha Salida</th>
+                        <th>Fecha Entrega</th>
+                        <th>Tracking</th>
+                        <th>Eficiencia</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var envio in Model.Envios)
+                    {
+                        <tr>
+                            <td class="text-center">@envio.Id</td>
+                            <td>@envio.EmailCliente</td>
+                            <td class="text-center">@envio.Tipo</td>
+                            <td>@envio.Agencia</td>
+                            <td>@envio.DireccionPostal</td>
+                            <td class="text-end">@envio.Peso</td>
+                            <td class="text-center">@envio.FechaSalida.ToString("dd/MM/yyyy")</td>
+                            <td class="text-center">
+                                @(envio.FechaEntrega.HasValue
+                                    ? envio.FechaEntrega.Value.ToString("dd/MM/yyyy")
+                                    : "-")
+                            </td>
+                            <td class="text-center">@envio.NroTracking</td>
+                            <td class="text-center">
+                                @(envio.EntregaEficiente.HasValue
+                                    ? (envio.EntregaEficiente.Value ? "Sí" : "No")
+                                    : "No calculado")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center">No hay envíos registrados.</div>
+    }
+</div>

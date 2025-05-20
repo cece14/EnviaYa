@@ -1,0 +1,144 @@
+﻿@model AltaEnvioViewModel
+
+@{
+    ViewData["Title"] = "Envíos en Proceso";
+}
+
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold" style="color: #0F2E4C;">Envíos</h2>
+        <p class="text-muted">Visualice el historial de envíos, filtre por envíos en proceso y acceda a sus acciones</p>
+    </div>
+
+    <form method="get" asp-action="Index" id="filtroForm" class="mb-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body d-flex justify-content-center align-items-center gap-3">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="soloEnProceso" id="soloEnProceso"
+                           value="true" @(Model.SoloEnProceso ? "checked" : "") onchange="document.getElementById('filtroForm').submit();" />
+                    <label class="form-check-label fw-semibold" for="soloEnProceso">
+                        Mostrar solo envíos en proceso
+                    </label>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success text-center fw-bold">@TempData["Success"]</div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center fw-bold">@TempData["Error"]</div>
+    }
+
+    @if (Model.Envios != null && Model.Envios.Any())
+    {
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-hover align-middle">
+                <thead class="table-light text-center">
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Tipo</th>
+                        <th>Estado</th>
+                        <th>Agencia</th>
+                        <th>Dirección Postal</th>
+                        <th>Peso (kg)</th>
+                        <th>Fecha Salida</th>
+                        <th>Tracking</th>
+                        <th>Último Seguimiento</th>
+                        <th>Eficiencia</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var envio in Model.Envios)
+                    {
+                        <tr class="@(envio.Estado.ToUpper() == "FINALIZADO" ? "table-light" : "")">
+                            <td>@envio.EmailCliente</td>
+                            <td class="text-center">@envio.Tipo</td>
+                            <td class="text-center">
+                                @if (envio.Estado.ToUpper() == "EN_PROCESO")
+                                {
+                                    <span class="badge bg-warning text-dark">En proceso</span>
+                                }
+                                else if (envio.Estado.ToUpper() == "FINALIZADO")
+                                {
+                                    <span class="badge bg-success">Finalizado</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">@envio.Estado</span> 
+                                }
+                            </td>
+                            <td>@envio.Agencia</td>
+                            <td>@envio.DireccionPostal</td>
+                            <td class="text-end">@envio.Peso</td>
+                            <td class="text-center">@envio.FechaSalida.ToString("dd/MM/yyyy")</td>
+                            <td class="text-center">@envio.NroTracking</td>
+                            <td class="text-center">
+                                @if (!string.IsNullOrWhiteSpace(envio.UltimoComentario))
+                                {
+                                    <span class="text-muted">@envio.UltimoComentario</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted fst-italic">Sin seguimiento</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                @if (envio.Tipo == "Urgente" && envio.Estado.ToUpper() == "FINALIZADO")
+                                {
+                                    if (envio.EntregaEficiente == true)
+                                    {
+                                        <span class="fw-bold text-success">Eficiente</span>
+                                    }
+                                    else if (envio.EntregaEficiente == false)
+                                    {
+                                        <span class="fw-bold text-danger">No eficiente</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted fst-italic">N/A</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted fst-italic">N/A</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-center gap-2">
+                                    @if (envio.Estado.ToUpper() == "FINALIZADO")
+                                    {
+                                        <button class="btn btn-outline-success btn-sm" disabled>
+                                            <i class="bi bi-check-circle"></i> Finalizar
+                                        </button>
+                                        <button class="btn btn-outline-primary btn-sm" disabled>
+                                            <i class="bi bi-chat-left-text"></i> Comentar
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="Envios" asp-action="Finalizar" asp-route-id="@envio.Id" class="btn btn-outline-success btn-sm">
+                                            <i class="bi bi-check-circle"></i> Finalizar
+                                        </a>
+                                        <a asp-controller="Seguimientos" asp-action="Crear" asp-route-envioId="@envio.Id" class="btn btn-outline-primary btn-sm">
+                                            <i class="bi bi-chat-left-text"></i> Comentar
+                                        </a>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center">No hay envíos disponibles.</div>
+    }
+</div>

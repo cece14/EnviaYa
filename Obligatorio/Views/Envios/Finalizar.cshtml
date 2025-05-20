@@ -1,0 +1,33 @@
+﻿@model DTO.FinalizarEnvioDTO
+
+@{
+    ViewData["Title"] = "Finalizar Envío";
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger text-center fw-bold">
+        @TempData["Error"]
+    </div>
+}
+<div class="container mt-5" style="max-width: 500px;">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold" style="color: #0F2E4C;">Finalizar Envío</h2>
+        <p class="text-muted">Ingrese la fecha y hora en que se entregó el paquete</p>
+    </div>
+
+    <form asp-action="Finalizar" method="post" class="p-4 shadow rounded" style="background-color: #ffffff;">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-4">
+            <label asp-for="FechaEntrega" class="form-label" style="color: #0F2E4C;">Fecha y hora de entrega</label>
+            <input asp-for="FechaEntrega" type="datetime-local" class="form-control border-2" style="border-color: #27C281;" />
+            <span asp-validation-for="FechaEntrega" class="text-danger"></span>
+        </div>
+
+        <div class="d-grid">
+            <button type="submit" class="btn" style="background-color: #27C281; color: white; font-weight: bold;">
+                Finalizar Envío
+            </button>
+        </div>
+    </form>
+</div>

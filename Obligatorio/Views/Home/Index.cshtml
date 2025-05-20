@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Inicio";
+    var rol = Context.Session.GetString("rol");
+}
+
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <img src="~/img/Logo.png" alt="Logo EnvíaYa" style="height: 80px;" />
+        <h2 class="fw-bold mt-3" style="color: #0F2E4C;">¡Bienvenido a EnvíaYa!</h2>
+        <p class="text-muted">Tu sistema de gestión de envíos y empleados</p>
+    </div>
+
+    <div class="row justify-content-center mt-4">
+        @if (rol == "0") // Administrador
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm h-100 border-0">
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold">Gestión de Empleados</h5>
+                        <p class="card-text text-muted">Visualiza, crea y administra empleados del sistema.</p>
+                        <a href="@Url.Action("Index", "Empleados")" class="btn btn-outline-primary">Ver empleados</a>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (rol == "0" || rol == "1") // Admin o Funcionario
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm h-100 border-0">
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold">Gestión de Envíos</h5>
+                        <p class="card-text text-muted">Consulta, crea y actualiza envíos.</p>
+                        <a href="@Url.Action("Index", "Envios")" class="btn btn-outline-success">Ver envíos</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm h-100 border-0">
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold">Seguimientos</h5>
+                        <p class="card-text text-muted">Agrega comentarios y verifica el estado.</p>
+                        <a href="@Url.Action("Crear", "Seguimientos")" class="btn btn-outline-secondary">Comentar</a>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (string.IsNullOrEmpty(rol))
+        {
+            <div class="col-12 text-center">
+                <p class="text-danger">No tienes permisos asignados o tu sesión ha expirado.</p>
+                <a href="@Url.Action("Login", "Usuarios")" class="btn btn-danger">Volver al Login</a>
+            </div>
+        }
+    </div>
+</div>

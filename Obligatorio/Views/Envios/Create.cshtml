@@ -1,0 +1,76 @@
+﻿@model AltaEnvioViewModel
+
+@{
+    ViewData["Title"] = "Alta de Envío";
+}
+
+<div class="container mt-5" style="max-width: 600px;">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold" style="color: #0F2E4C;">Registrar Envío</h2>
+        <p class="text-muted">Complete los datos del nuevo envío</p>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success text-center fw-bold">@TempData["Success"]</div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center fw-bold">@TempData["Error"]</div>
+    }
+
+    @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+    <form asp-action="Create" method="post" class="p-4 shadow rounded" style="background-color: #ffffff;">
+        <div class="mb-3">
+            <label asp-for="DTO.TipoEnvio" class="form-label" style="color: #0F2E4C;">Tipo de Envío</label>
+            <select asp-for="DTO.TipoEnvio" class="form-select border-2" style="border-color: #27C281;">
+                <option value="Estandar">Estandar</option>
+                <option value="Urgente">Urgente</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DTO.EmailCliente" class="form-label" style="color: #0F2E4C;">Email del Cliente</label>
+            <input asp-for="DTO.EmailCliente" class="form-control border-2" style="border-color: #27C281;" />
+            <span asp-validation-for="DTO.EmailCliente" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DTO.AgenciaId" class="form-label" style="color: #0F2E4C;">Agencia</label>
+            <select asp-for="DTO.AgenciaId" class="form-select border-2" style="border-color: #27C281;">
+                <option value="">-- Seleccionar --</option>
+                @foreach (var agencia in Model.Agencias)
+                {
+                    <option value="@agencia.Id">@agencia.Nombre</option>
+                }
+            </select>
+            <span asp-validation-for="DTO.AgenciaId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DTO.DireccionPostal" class="form-label" style="color: #0F2E4C;">Dirección Postal</label>
+            <input asp-for="DTO.DireccionPostal" class="form-control border-2" style="border-color: #27C281;" />
+            <span asp-validation-for="DTO.DireccionPostal" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DTO.Peso" class="form-label" style="color: #0F2E4C;">Peso del paquete (kg)</label>
+            <input asp-for="DTO.Peso" class="form-control border-2" style="border-color: #27C281;" />
+            <span asp-validation-for="DTO.Peso" class="text-danger"></span>
+        </div>
+
+      
+
+        <div class="d-grid">
+            <button type="submit" class="btn" style="background-color: #27C281; color: white; font-weight: bold;">
+                Registrar Envío
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

@@ -1,0 +1,72 @@
+﻿@using DTO
+@model Obligatorio.Models.EditarEmpleadoViewModel
+@{
+    ViewData["Title"] = "Modificar Empleado";
+}
+
+<div class="container mt-5" style="max-width: 600px;">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold" style="color: #0F2E4C;">Modificar Empleado</h2>
+        <p class="text-muted">Actualice los datos necesarios y guarde los cambios</p>
+    </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center fw-bold">@TempData["Error"]</div>
+    }
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success text-center fw-bold">@TempData["Success"]</div>
+    }
+
+    <!-- Mostrar errores globales -->
+    @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+    <form asp-action="Edit" method="post" class="p-4 shadow rounded" style="background-color: #ffffff;">
+        <input type="hidden" asp-for="DTO.Id" />
+
+        <div class="mb-3">
+            <label asp-for="DTO.Nombre" class="form-label" style="color: #0F2E4C;"></label>
+            <input asp-for="DTO.Nombre" class="form-control border-2" style="border-color: #27C281;" />
+            <span asp-validation-for="DTO.Nombre" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DTO.Apellido" class="form-label" style="color: #0F2E4C;"></label>
+            <input asp-for="DTO.Apellido" class="form-control border-2" style="border-color: #27C281;" />
+            <span asp-validation-for="DTO.Apellido" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DTO.Email" class="form-label" style="color: #0F2E4C;"></label>
+            <input asp-for="DTO.Email" class="form-control border-2" style="border-color: #27C281;" />
+            <span asp-validation-for="DTO.Email" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DTO.Telefono" class="form-label" style="color: #0F2E4C;"></label>
+            <input asp-for="DTO.Telefono" class="form-control border-2" style="border-color: #27C281;" />
+            <span asp-validation-for="DTO.Telefono" class="text-danger"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="DTO.Rol" class="form-label" style="color: #0F2E4C;"></label>
+            <select asp-for="DTO.Rol" class="form-select border-2" style="border-color: #27C281;">
+                @foreach (var rol in Enum.GetValues(typeof(RolDTO)))
+                {
+                    <option value="@rol" selected="@(rol.ToString() == Model.DTO.Rol.ToString() ? "selected" : null)">
+                        @rol
+                    </option>
+                }
+            </select>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn" style="background-color: #27C281; color: white; font-weight: bold;">
+                Guardar cambios
+            </button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
